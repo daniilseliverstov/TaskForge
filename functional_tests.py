@@ -1,7 +1,48 @@
+import unittest
 from selenium import webdriver
+from selenium.webdriver.common.by import By
 
-browser = webdriver.Firefox()
-browser.get("http://localhost:8000")
 
-assert "Congratulations!" in browser.title
-print("Джанго установлен, все работает!")
+class HomePageTest(unittest.TestCase):
+    """Набор тестов для проверки домашней страницы системы.
+
+        Тесты проверяют основные элементы интерфейса, которые должны отображаться
+        неавторизованному пользователю при первом посещении сайта.
+        """
+    def setUp(self):
+        self.browser = webdriver.Firefox()
+
+    def tearDown(self):
+        self.browser.quit()
+
+    def test_home_page_title(self):
+        """title стартовой страницы"""
+        # Пользователь, зайдя на сайт попадает на главную страницу, на ней есть Название компании, дата, день недели....
+        # Что-то еще и Кнопка Логина и надпись о необходимости авторизоваться.
+        self.browser.get("http://localhost:8000")
+        self.assertIn("TaskForge", self.browser.title)
+
+    def test_home_page_header(self):
+        """header стартовая страница"""
+        self.browser.get("http://localhost:8000")
+        header = self.browser.find_element(By.TAG_NAME, 'h1')
+        self.assertIn('Honman Orders', header.text)
+
+
+if __name__ == "__main__":
+    unittest.main()
+
+# Пользователь, зайдя на сайт попадает на главную страницу, на ней есть Название компании, дата, день недели....
+# Что-то еще и Кнопка Логина и надпись о необходимости авторизоваться.
+
+# После нажатия на Логин открывается страница авторизации с формой
+
+# Все пользователи сайта поделены на отделы: коммерческий, лид-технический, технический, снабжение.
+# Отделы еще поменяются
+# Каждый пользователь относиться только к одному отделу, у каждого отдела свой функционал
+# и свои доступы к функциям приложения
+
+# Коммерческий отдел, принимает заказы(вне сайта), и создает новые заказы,
+# новые заказы получают статус "принят" и становятся доступны для отображения отделу лид-технический
+
+
